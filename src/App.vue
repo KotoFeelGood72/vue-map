@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="mobule-map">
+      <v-map/>
+      <mobile-bar/>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import vMap from '@/components/map/v-map.vue'
+import mobileBar from '@/components/bar/mobile-bar.vue'
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    vMap,
+    mobileBar
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+
+body {
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+.mobule-map {
+  height: 100vh;
+}
+
 </style>
