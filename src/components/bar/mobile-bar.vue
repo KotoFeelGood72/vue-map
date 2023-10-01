@@ -4,12 +4,9 @@
     <div class="bar-main">
       <div class="top-bar">
         <div class="drag"   
-          @touchstart="startDragging"
-          @touchmove="handleDragging"
-          @touchend="stopDragging"
-          @mousedown="startDragging"
-          @mousemove="handleDragging"
-          @mouseup="stopDragging"
+        @touchstart="startDragging"
+        @touchmove="handleDragging"
+        @touchend="stopDragging"
         >
         <div class="drag-bar"></div>
       </div>
@@ -58,7 +55,8 @@ export default {
   computed: {
     barStyles() {
       return {
-        transform: `translateY(calc(90% + ${this.sidebarPositionPercentage}vh))`,
+        transform: `translateY(${this.sidebarPositionPercentage}vh)`,
+        transition: 'transform 0.1s ease', // Добавляем анимацию
       };
     },
   },
@@ -73,7 +71,7 @@ export default {
     },
     handleDragging(event) {
       if (this.isDragging) {
-        const deltaY = event.touches[0].clientY - this.currentY;
+        const deltaY = event.touches ? event.touches[0].clientY - this.currentY : event.clientY - this.currentY;
         const screenHeight = window.innerHeight;
         const percentageChange = (deltaY / screenHeight) * 100;
 
@@ -84,7 +82,7 @@ export default {
           this.sidebarPositionPercentage += percentageChange;
         }
 
-        this.currentY = event.touches[0].clientY;
+        this.currentY = event.touches ? event.touches[0].clientY : event.clientY;
       }
     },
     stopDragging() {
