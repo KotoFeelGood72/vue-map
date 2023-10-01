@@ -4,9 +4,10 @@
     <div class="bar-main">
       <div class="top-bar">
         <div class="drag"   
-        @touchstart="startDragging"
-        @touchmove="handleDragging"
-        @touchend="stopDragging"
+          @touchstart="startDragging"
+          @touchmove="handleDragging"
+          @touchend="stopDragging"
+    
         >
         <div class="drag-bar"></div>
       </div>
@@ -54,8 +55,8 @@ export default {
   },
   computed: {
     barStyles() {
-      return {
-        transform: `translateY(${this.sidebarPositionPercentage}vh)`,
+       return {
+        transform: `translateY(calc(90% + ${this.sidebarPositionPercentage}vh))`,
         transition: 'transform 0.1s ease', // Добавляем анимацию
       };
     },
