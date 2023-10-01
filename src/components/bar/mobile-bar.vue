@@ -1,6 +1,6 @@
 <template>
   <div class="bar" :style="barStyles">
-    <div class="bar-bg" :class="{'active': sidebarPositionPercentage === -80}"></div>
+    <div class="bar-bg" :class="{'active': sidebarPositionPercentage === -70}"></div>
     <div class="bar-main">
       <div class="top-bar">
         <div class="drag"   
@@ -85,7 +85,7 @@ export default {
       this.snapToNearestPosition();
     },
     snapToNearestPosition() {
-      const positions = [-50, -80, 0]; // Ваши требуемые положения в процентах
+      const positions = [-50, -70, 0]; // Ваши требуемые положения в процентах
       const closestPosition = positions.reduce(
         (closest, position) => {
           const distance = Math.abs(
@@ -103,7 +103,7 @@ export default {
       }
     },
     openShutter() {
-      this.sidebarPositionPercentage = -80;
+      this.sidebarPositionPercentage = -70;
     },
   },
 };

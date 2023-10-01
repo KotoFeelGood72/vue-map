@@ -32,6 +32,7 @@
 
 .item-img {
   min-width: 80px;
+  max-width: 80px;
   height: 80px;
   margin-right: 20px;
   border-radius: 10px;
