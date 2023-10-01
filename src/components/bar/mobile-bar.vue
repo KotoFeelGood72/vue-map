@@ -4,12 +4,12 @@
     <div class="bar-main">
       <div class="top-bar">
         <div class="drag"   
-          @touchstart="startDragging"
-          @touchmove="handleDragging"
-          @touchend="stopDragging"
-          @mousedown="startDragging"
-          @mousemove="handleDragging"
-          @mouseup="stopDragging"
+          @touchstart.prevent="startDragging"
+          @touchmove.prevent="handleDragging"
+          @touchend.prevent="stopDragging"
+          @mousedown.prevent="startDragging"
+          @mousemove.prevent="handleDragging"
+          @mouseup.prevent="stopDragging"
         >
         <div class="drag-bar"></div>
       </div>
@@ -97,40 +97,24 @@ export default {
       this.isDragging = false;
       this.snapToNearestPosition();
     },
-    // Обновите метод snapToNearestPosition() следующим образом:
-snapToNearestPosition() {
-  const positions = [-50, -70, 0]; // Ваши требуемые положения в процентах
-  const currentPosition = this.sidebarPositionPercentage;
-  let targetPosition = currentPosition;
-
-  // Найдите ближайшую позицию
-  positions.forEach((position) => {
-    if (Math.abs(currentPosition - position) < Math.abs(currentPosition - targetPosition)) {
-      targetPosition = position;
-    }
-  });
-
-  // Анимируйте перемещение к ближайшей позиции
-  const animate = () => {
-    const difference = targetPosition - currentPosition;
-    const easingFactor = 0.1; // Фактор сглаживания, можно настроить
-    const moveAmount = difference * easingFactor;
-
-    if (Math.abs(moveAmount) < 0.1) {
-      // Останавливаем анимацию, когда мы близки к целевой позиции
-      this.sidebarPositionPercentage = targetPosition;
-    } else {
-      // Продолжаем анимацию
-      this.sidebarPositionPercentage += moveAmount;
-      requestAnimationFrame(animate);
-    }
-  };
-
-  animate();
-},
-
-
-
+    snapToNearestPosition() {
+      const positions = [-50, -70, 0]; // Ваши требуемые положения в процентах
+      const closestPosition = positions.reduce(
+        (closest, position) => {
+          const distance = Math.abs(
+            this.sidebarPositionPercentage - position
+          );
+          if (distance < closest.distance) {
+            return { distance, position };
+          }
+          return closest;
+        },
+        { distance: Infinity, position: null }
+      );
+      if (closestPosition.position !== null) {
+        this.sidebarPositionPercentage = closestPosition.position;
+      }
+    },
     openShutter() {
       this.sidebarPositionPercentage = -70;
     },
