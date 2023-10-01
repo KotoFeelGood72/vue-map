@@ -7,7 +7,9 @@
           @touchstart="startDragging"
           @touchmove="handleDragging"
           @touchend="stopDragging"
-    
+          @mousedown="startDragging"
+          @mousemove="handleDragging"
+          @mouseup="stopDragging"
         >
         <div class="drag-bar"></div>
       </div>
@@ -72,6 +74,11 @@ export default {
     },
     handleDragging(event) {
       if (this.isDragging) {
+        // Проверка на мультитач (если есть более одного прикосновения, игнорируем)
+        if (event.touches && event.touches.length > 1) {
+          return;
+        }
+
         const deltaY = event.touches ? event.touches[0].clientY - this.currentY : event.clientY - this.currentY;
         const screenHeight = window.innerHeight;
         const percentageChange = (deltaY / screenHeight) * 100;
@@ -155,6 +162,8 @@ export default {
 .top-bar {
   padding: 0 10px 10px 10px;
   box-shadow: 0 0 20px 0 #0000001f;
+  position: relative;
+  z-index: 1;
 }
 
 .tabs {
