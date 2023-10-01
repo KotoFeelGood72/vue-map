@@ -76,7 +76,14 @@ export default {
         const deltaY = event.touches[0].clientY - this.currentY;
         const screenHeight = window.innerHeight;
         const percentageChange = (deltaY / screenHeight) * 100;
-        this.sidebarPositionPercentage += percentageChange;
+
+        // Ограничьте перемещение вниз
+        if (this.sidebarPositionPercentage + percentageChange >= 0) {
+          this.sidebarPositionPercentage = 0;
+        } else {
+          this.sidebarPositionPercentage += percentageChange;
+        }
+
         this.currentY = event.touches[0].clientY;
       }
     },
