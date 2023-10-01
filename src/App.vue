@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="mobule-map">
+    <div class="mobile-map">
       <v-map/>
       <mobile-bar/>
     </div>
@@ -20,15 +20,27 @@ export default {
 
 <style lang="scss">
 
+#app {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 body {
   padding: 0;
   box-sizing: border-box;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+  
 }
 
-.mobule-map {
+.mobile-map {
   height: 100vh;
+  overflow-y: hidden!important;
+  position: relative;
 }
+
 
 </style>

@@ -42,7 +42,7 @@ import { yandexMap, ymapMarker } from 'vue-yandex-maps'
 
 .map {
   height: 100%;
-  max-width: 475px;
+  width: 100%;
   z-index: -1;
 
   .ymap-container {

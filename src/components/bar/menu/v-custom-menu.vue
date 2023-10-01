@@ -50,7 +50,8 @@
   flex-direction: row;
   list-style: none;
   overflow-x: auto;
-  padding: 0 10px 20px 10px;
+  padding: 0 10px 15px 10px;
+  margin-bottom: 0;
   li {
     display: flex;
     align-items: center;

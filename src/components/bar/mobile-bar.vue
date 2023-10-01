@@ -1,12 +1,12 @@
 <template>
   <div class="bar" :style="barStyles">
-    <div class="bar-bg" :class="{'active': sidebarPositionPercentage === -70}"></div>
-    <div class="bar-main">
+    <div class="bar-bg" :class="{'active': sidebarPositionPercentage === -80}"></div>
+    <div class="bar-main" ref="barMain">
       <div class="top-bar">
         <div class="drag"   
           @touchstart.prevent="startDragging"
           @touchmove.prevent="handleDragging"
-          @touchend.prevent="stopDragging"
+          @touchend="stopDragging"
           @mousedown.prevent="startDragging"
           @mousemove.prevent="handleDragging"
           @mouseup.prevent="stopDragging"
@@ -58,8 +58,7 @@ export default {
   computed: {
     barStyles() {
        return {
-        transform: `translateY(calc(90% + ${this.sidebarPositionPercentage}vh))`,
-        transition: 'transform 0.4s ease', // Добавляем анимацию
+        top: `calc(90% + ${this.sidebarPositionPercentage}%)`,
       };
     },
   },
@@ -74,16 +73,10 @@ export default {
     },
     handleDragging(event) {
       if (this.isDragging) {
-        // Проверка на мультитач (если есть более одного прикосновения, игнорируем)
-        if (event.touches && event.touches.length > 1) {
-          return;
-        }
-
         const deltaY = event.touches ? event.touches[0].clientY - this.currentY : event.clientY - this.currentY;
         const screenHeight = window.innerHeight;
         const percentageChange = (deltaY / screenHeight) * 100;
 
-        // Ограничьте перемещение вниз
         if (this.sidebarPositionPercentage + percentageChange >= 0) {
           this.sidebarPositionPercentage = 0;
         } else {
@@ -98,7 +91,7 @@ export default {
       this.snapToNearestPosition();
     },
     snapToNearestPosition() {
-      const positions = [-50, -70, 0]; // Ваши требуемые положения в процентах
+      const positions = [-50, -80, 0];
       const closestPosition = positions.reduce(
         (closest, position) => {
           const distance = Math.abs(
@@ -116,7 +109,13 @@ export default {
       }
     },
     openShutter() {
-      this.sidebarPositionPercentage = -70;
+      this.sidebarPositionPercentage = -80;
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth', 
+        });
+      }, 100); 
     },
   },
 };
@@ -124,9 +123,13 @@ export default {
 
 <style lang="scss" scoped>
 .drag {
-  padding: 10px 0;
+  padding: 7px 0;
   position: relative;
   z-index: 999;
+  touch-action: pan-x;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .bar-main {
@@ -143,27 +146,27 @@ export default {
 
 .drag-bar {
   width: 60px;
-  height: 6px;
+  height: 4px;
   background-color: rgb(17, 221, 187);
   margin: 0 auto;
   border-radius: 100px;
 }
 .bar {
   position: fixed;
-  top: 0;
+  // top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #fff;
   width: 100%;
   height: 100%;
-  transition: transform 0.1s;
-  z-index: 101;
+  transition: all 0.1s ease;
+  z-index: 999;
 }
 
 .top-bar {
   padding: 0 10px 10px 10px;
   box-shadow: 0 0 20px 0 #0000001f;
-  position: relative;
-  z-index: 1;
 }
 
 .tabs {
@@ -177,7 +180,7 @@ export default {
 
 .top-position-menu {
   position: absolute;
-  bottom: calc(100% - 20px);
+  bottom: calc(100% - 5px);
 }
 
 .bar-bg {
@@ -197,6 +200,7 @@ export default {
     top: -100%;
     opacity: .7;
     visibility: visible;
+    pointer-events: all;
   }
 }
 </style>
