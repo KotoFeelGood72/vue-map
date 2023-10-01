@@ -59,7 +59,7 @@ export default {
     barStyles() {
        return {
         transform: `translateY(calc(90% + ${this.sidebarPositionPercentage}vh))`,
-        transition: 'transform 0.1s ease', // Добавляем анимацию
+        transition: 'transform 0.4s ease', // Добавляем анимацию
       };
     },
   },
