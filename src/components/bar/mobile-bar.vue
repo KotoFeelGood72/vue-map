@@ -78,21 +78,23 @@ export default {
       }
     },
     handleDragging(event) {
-      if (this.isDragging) {
-        const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-        const deltaY = clientY - this.currentY;
-        const screenHeight = window.innerHeight;
-        const percentageChange = (deltaY / screenHeight) * 100;
+    if (this.isDragging) {
+      const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+      const deltaY = clientY - this.currentY;
+      const screenHeight = window.innerHeight;
+      const percentageChange = (deltaY / screenHeight) * 100;
 
-        if (this.sidebarPositionPercentage + percentageChange >= 0) {
-          this.sidebarPositionPercentage = 0;
-        } else {
-          this.sidebarPositionPercentage += percentageChange;
-        }
-
-        this.currentY = clientY;
+      if (this.sidebarPositionPercentage + percentageChange >= 0) {
+        this.sidebarPositionPercentage = 0;
+      } else if (this.sidebarPositionPercentage + percentageChange <= -80) { // Ограничение до -10%
+        this.sidebarPositionPercentage = -80;
+      } else {
+        this.sidebarPositionPercentage += percentageChange;
       }
-    },
+
+      this.currentY = clientY;
+    }
+  },
     stopDragging() {
       this.isDragging = false;
       this.snapToNearestPosition();
