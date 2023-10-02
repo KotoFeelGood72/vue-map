@@ -4,10 +4,10 @@
     <div class="bar-main" 
         ref="barMain"
         @touchstart="startDragging"
-        @touchmove="handleDragging"
+        @touchmove.prevent="handleDragging"
         @touchend="stopDragging"
         @mousedown="startDragging"
-        @mousemove="handleDragging"
+        @mousemove.prevent="handleDragging"
         @mouseup="stopDragging"
       >
       <div class="top-bar">
@@ -15,9 +15,9 @@
         <div class="drag-bar"></div>
       </div>
         <input-search @focusSearch="openShutter"/>
-        <v-menu @selectTab="selectTabs" />
+        <v-menu @selectTab="selectTabs"/>
       </div>
-      <div class="scroll-area">
+      <div class="scroll-area" ref="scrollArea">
         <v-custom-menu :class="{'top-position-menu': sidebarPositionPercentage === 0}"/>
         <div class="tabs">
           <div class="tab" v-for="(item, i) in menu" :key="'tabs-' + i">
@@ -66,11 +66,16 @@ export default {
   methods: {
     selectTabs(index) {
       this.activeTab = index;
+      this.openShutter();
     },
     startDragging(event) {
-      this.isDragging = true;
-      this.startY = event.touches[0].clientY;
-      this.currentY = this.startY;
+      const scrollArea = this.$refs.scrollArea;
+      if (scrollArea && scrollArea.scrollTop === 0) {
+        // Если элемент не скроллится, начинаем драг
+        this.isDragging = true;
+        this.startY = event.touches[0].clientY;
+        this.currentY = this.startY;
+      }
     },
     handleDragging(event) {
       if (this.isDragging) {
@@ -144,7 +149,7 @@ export default {
 }
 
 .scroll-area {
-  max-height: 100%;
+  max-height: calc(100% - 160px);
   overflow-y: auto;
 }
 

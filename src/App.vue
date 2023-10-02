@@ -33,6 +33,7 @@ body {
   box-sizing: border-box;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+  overscroll-behavior-y: contain;
   
 }
 

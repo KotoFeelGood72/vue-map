@@ -1,6 +1,6 @@
 <template>
   <div class="input-search">
-    <input type="search" name="search" id="search-city" placeholder="Поиск мест, скидок, карт поблизости" @focus.prevent="focusSearch">
+    <input type="search" name="search" id="search-city" placeholder="Поиск мест, скидок, карт поблизости" @focus.passive="focusSearch">
     <button class="search-btn">
       <global-icon icon="iconamoon:search-thin" width="15" height="15"/>
     </button>
