@@ -1,24 +1,25 @@
 <template>
   <div class="bar" :style="barStyles">
     <div class="bar-bg" :class="{'active': sidebarPositionPercentage === -80}" @click="closeBar"></div>
-    <div class="bar-main" 
-        ref="barMain"
-        @touchstart="startDragging"
-        @touchmove.prevent="handleDragging"
-        @touchend="stopDragging"
-        @mousedown="startDragging"
-        @mousemove.prevent="handleDragging"
-        @mouseup="stopDragging"
-      >
+    <div
+      class="bar-main"
+      ref="barMain"
+      @touchstart="startDragging"
+      @touchmove="handleDragging"
+      @touchend="stopDragging"
+      @mousedown="startDragging"
+      @mousemove="handleDragging"
+      @mouseup="stopDragging"
+    >
       <div class="top-bar">
         <div class="drag">
-        <div class="drag-bar"></div>
-      </div>
-        <input-search @focusSearch="openShutter"/>
-        <v-menu @selectTab="selectTabs"/>
+          <div class="drag-bar"></div>
+        </div>
+        <input-search @focusSearch="openShutter" />
+        <v-menu @selectTab="selectTabs" />
       </div>
       <div class="scroll-area" ref="scrollArea">
-        <v-custom-menu :class="{'top-position-menu': sidebarPositionPercentage === 0}"/>
+        <v-custom-menu :class="{'top-position-menu': sidebarPositionPercentage === 0}" />
         <div class="tabs">
           <div class="tab" v-for="(item, i) in menu" :key="'tabs-' + i">
             <div v-if="activeTab === i">
@@ -58,7 +59,7 @@ export default {
   },
   computed: {
     barStyles() {
-       return {
+      return {
         top: `calc(90% + ${this.sidebarPositionPercentage}%)`,
       };
     },
@@ -71,15 +72,15 @@ export default {
     startDragging(event) {
       const scrollArea = this.$refs.scrollArea;
       if (scrollArea && scrollArea.scrollTop === 0) {
-        // Если элемент не скроллится, начинаем драг
         this.isDragging = true;
-        this.startY = event.touches[0].clientY;
+        this.startY = event.touches ? event.touches[0].clientY : event.clientY;
         this.currentY = this.startY;
       }
     },
     handleDragging(event) {
       if (this.isDragging) {
-        const deltaY = event.touches ? event.touches[0].clientY - this.currentY : event.clientY - this.currentY;
+        const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+        const deltaY = clientY - this.currentY;
         const screenHeight = window.innerHeight;
         const percentageChange = (deltaY / screenHeight) * 100;
 
@@ -89,7 +90,7 @@ export default {
           this.sidebarPositionPercentage += percentageChange;
         }
 
-        this.currentY = event.touches ? event.touches[0].clientY : event.clientY;
+        this.currentY = clientY;
       }
     },
     stopDragging() {
@@ -100,9 +101,7 @@ export default {
       const positions = [-50, -80, 0];
       const closestPosition = positions.reduce(
         (closest, position) => {
-          const distance = Math.abs(
-            this.sidebarPositionPercentage - position
-          );
+          const distance = Math.abs(this.sidebarPositionPercentage - position);
           if (distance < closest.distance) {
             return { distance, position };
           }
@@ -122,9 +121,9 @@ export default {
       setTimeout(() => {
         window.scrollTo({
           top: 0,
-          behavior: 'smooth', 
+          behavior: 'smooth',
         });
-      }, 100); 
+      }, 100);
     },
   },
 };
