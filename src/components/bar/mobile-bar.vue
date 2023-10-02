@@ -1,16 +1,17 @@
 <template>
   <div class="bar" :style="barStyles">
-    <div class="bar-bg" :class="{'active': sidebarPositionPercentage === -80}"></div>
-    <div class="bar-main" ref="barMain">
+    <div class="bar-bg" :class="{'active': sidebarPositionPercentage === -80}" @click="closeBar"></div>
+    <div class="bar-main" 
+        ref="barMain"
+        @touchstart="startDragging"
+        @touchmove="handleDragging"
+        @touchend="stopDragging"
+        @mousedown="startDragging"
+        @mousemove="handleDragging"
+        @mouseup="stopDragging"
+      >
       <div class="top-bar">
-        <div class="drag"   
-          @touchstart.prevent="startDragging"
-          @touchmove.prevent="handleDragging"
-          @touchend="stopDragging"
-          @mousedown.prevent="startDragging"
-          @mousemove.prevent="handleDragging"
-          @mouseup.prevent="stopDragging"
-        >
+        <div class="drag">
         <div class="drag-bar"></div>
       </div>
         <input-search @focusSearch="openShutter"/>
@@ -108,6 +109,9 @@ export default {
         this.sidebarPositionPercentage = closestPosition.position;
       }
     },
+    closeBar() {
+      this.sidebarPositionPercentage = 0;
+    },
     openShutter() {
       this.sidebarPositionPercentage = -80;
       setTimeout(() => {
@@ -160,7 +164,7 @@ export default {
   background-color: #fff;
   width: 100%;
   height: 100%;
-  transition: all 0.1s ease;
+  transition: all 0.3s ease;
   z-index: 999;
 }
 
